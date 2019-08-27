@@ -2,6 +2,10 @@ package com.main.myapplication.ui.auth;
 
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.LiveDataReactiveStreams;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.main.myapplication.model.User;
@@ -9,41 +13,38 @@ import com.main.myapplication.network.auth.AuthApi;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class AuthViewModel extends ViewModel {
 
+    private final AuthApi authApi;
+    private MediatorLiveData<User> authUser = new MediatorLiveData<>();
+
     @Inject
     AuthViewModel(AuthApi authApi) {
+
+        this.authApi = authApi;
         Log.d(TAG, "AuthViewModel: ViewModel is working....");
+    }
 
-        authApi.getUser(1)
-                .toObservable()
+    public void authenticateWithid( int userId) {
+        final LiveData<User> source = LiveDataReactiveStreams.fromPublisher(
+                authApi.getUser(userId)
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<User>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+        );
 
-                    }
+        authUser.addSource(source, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                authUser.setValue(user);
+                authUser.removeSource(source);
+            }
+        });
+    }
 
-                    @Override
-                    public void onNext(User user) {
-                        Log.d(TAG, "onNext: "+ user.getEmail());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG, "onError: ", e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+    public LiveData<User> observeUser() {
+        return authUser;
     }
 }
