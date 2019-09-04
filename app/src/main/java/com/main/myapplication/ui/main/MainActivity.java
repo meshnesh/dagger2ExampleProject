@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.main.myapplication.BaseActivity;
 import com.main.myapplication.R;
+import com.main.myapplication.ui.main.profile.ProfileFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -21,6 +22,14 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         Toast.makeText(this, "MainActivity", Toast.LENGTH_SHORT).show();
+
+        testFragment();
+    }
+
+    private void testFragment(){
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, new ProfileFragment())
+                .commit();
     }
 
     @Override
@@ -36,12 +45,10 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.logout:
-                sessionManager.logOut();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.logout) {
+            sessionManager.logOut();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 }
