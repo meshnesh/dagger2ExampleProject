@@ -5,4 +5,7 @@
     <string name="iconimage">iconImage</string>
     <string name="logout">LogOut</string>
     <string name="error">error</string>
+    <string name="this_is_a_title">this is a title</string>
+    <string name="profile">profile</string>
+    <string name="posts">posts</string>
 </resources>
