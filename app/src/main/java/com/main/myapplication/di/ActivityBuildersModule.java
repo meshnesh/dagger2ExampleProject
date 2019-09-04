@@ -3,6 +3,7 @@ package com.main.myapplication.di;
 import com.main.myapplication.di.auth.AuthModule;
 import com.main.myapplication.di.auth.AuthViewModelsModule;
 import com.main.myapplication.di.main.MainFragmentBuildersModule;
+import com.main.myapplication.di.main.MainModule;
 import com.main.myapplication.di.main.MainViewModelsModule;
 import com.main.myapplication.ui.auth.AuthActivity;
 import com.main.myapplication.ui.main.MainActivity;
@@ -19,7 +20,7 @@ public abstract class ActivityBuildersModule {
     abstract AuthActivity contributeActivity();
 
     @ContributesAndroidInjector(
-            modules = {MainFragmentBuildersModule.class, MainViewModelsModule.class}
+            modules = {MainFragmentBuildersModule.class, MainViewModelsModule.class, MainModule.class}
     )
     abstract MainActivity contributeMainActivity();
 }
