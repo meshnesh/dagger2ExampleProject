@@ -4,4 +4,5 @@
     <string name="login">Login</string>
     <string name="iconimage">iconImage</string>
     <string name="logout">LogOut</string>
+    <string name="error">error</string>
 </resources>
